@@ -1,8 +1,14 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text, View} from "react-native";
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import ResultDetail from "./ResultDetail";
+import { useNavigation } from '@react-navigation/native';
 
 const ResultList = ({ title, restaurant }) => {
+
+	const navigation = useNavigation();
+
+	if (!restaurant.length) return null;
+
 	return (
 		<View style={styles.container}>
 			<Text style={styles.title}>{ title }</Text>
@@ -12,7 +18,11 @@ const ResultList = ({ title, restaurant }) => {
 				data={restaurant}
 				keyExtractor={(restaurant) => restaurant.id}
 				renderItem={({ item }) => {
-					return <ResultDetail restaurant={item}/>
+					return (
+						<TouchableOpacity onPress={() => navigation.navigate('ResultsShow', { id: item.id})}>
+							<ResultDetail restaurant={item}/>
+						</TouchableOpacity>
+					)
 				}}/>
 		</View>
 	);
